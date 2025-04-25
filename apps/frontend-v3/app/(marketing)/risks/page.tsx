@@ -33,8 +33,6 @@ export default function Privacy() {
               <nav className="nav">
                 <h2>Contents</h2>
 
-                <h3>Liquidity Provider risks</h3>
-
                 <ul>
                   <li>
                     <Link href="risks#general" scroll>
@@ -71,6 +69,9 @@ export default function Privacy() {
                         <Link href="risks#impermanent-loss-risk">Impermanent loss risk</Link>
                       </li>
                       <li>
+                        <Link href="risks#hooks-risk">Hooks risk</Link>
+                      </li>
+                      <li>
                         <Link href="risks#ui-risk">User Interface risk</Link>
                       </li>
                       <li>
@@ -94,6 +95,9 @@ export default function Privacy() {
                       </li>
                       <li>
                         <Link href="risks#boosted-pools">Boosted Pools</Link>
+                      </li>
+                      <li>
+                        <Link href="risks#stablesurge-hook">StableSurge Hook</Link>
                       </li>
                       <li>
                         <Link href="risks#concentrated-liquidity-pools">
@@ -136,7 +140,6 @@ export default function Privacy() {
           </FadeInOnView>
           <FadeInOnView>
             <div className="subsection">
-              <h2>Risks for Liquidity Providers (LPs)</h2>
               <h3 className="anchor" id="general">
                 General risks
               </h3>
@@ -710,6 +713,37 @@ export default function Privacy() {
           </FadeInOnView>
           <FadeInOnView>
             <div className="subsection">
+              <h4 className="anchor" id="hooks-risk">
+                Hooks
+              </h4>
+              <p>
+                Hooks introduces complex logic into Balancer pools and changes in its parameters can
+                significantly impact the risk profile of a pool. This complexity increases the
+                potential for unforeseen errors or vulnerabilities in the hook&apos;s code, that may
+                i.e. amplify impermanent loss, introduce new sources of volatility or impose
+                restrictions on pool interactions like joins and exits.
+              </p>
+              <ul>
+                <li>
+                  Hook specific risk: Balancer hooks introduce unique functionalities to Balancer
+                  pools, and while they offer exciting possibilities, they also present specific
+                  risks that users should be aware of.
+                </li>
+                <li>
+                  Hook Interactions: Hooks can interact with each other and with the pool contracts
+                  in unexpected ways. These interactions may lead to unintended and yet unknown
+                  consequences or exploits.
+                </li>
+                <li>
+                  Hook Updates: Hooks may be updated or modified over time. These updates could
+                  introduce new risks or alter the functionality of the pool in ways that may
+                  negatively impact your assets.
+                </li>
+              </ul>
+            </div>
+          </FadeInOnView>
+          <FadeInOnView>
+            <div className="subsection">
               <h4 className="anchor" id="ui-risk">
                 User Interface (UI) risk
               </h4>
@@ -1016,39 +1050,37 @@ export default function Privacy() {
                       liquidity, and increased yield for Liquidity Providers.
                     </li>
                     <li>
-                      For traders, Boosted Pools are a cheaper entry/exit into lending protocols
-                      like Aave.
+                      For traders, Boosted Pools are a cheaper entry/exit into decentralized lending
+                      protocols like Aave.
                     </li>
                     <li>
                       Boosted Pools increase the opportunity for LPs to gain exposure to a wide
                       variety of yield increases from multiple yield protocols.
                     </li>
                   </ul>
-                  <h5>Third party lending platform risk exposure (DeFi composability risk)</h5>
+                  <h5>Third party platform risk exposure (DeFi composability risk)</h5>
                   <p>
-                    Since boosted pools deposit excess liquidity into lending protocols, like Aave,
-                    to generate yield, LPs must fully understand the risks of the underlying lending
+                    Since boosted pools deposit excess liquidity into third-party protocols, like
+                    Aave, to generate yield, LPs must fully understand the risks of the underlying
                     protocol since a portion of their funds will be exposed to the risks of that
-                    protocol. Some of the risks of the underlying lending protocol may include smart
+                    protocol. Some of the risks of the underlying protocol may include smart
                     contract bugs, economic attack vulnerabilities and counterparty risk from the
-                    protocol&rsquo;s borrowers. Lending platforms may also use{' '}
+                    protocol&rsquo;s borrowers. Underlaying protocols may also use{' '}
                     <Link href="risks#oracles">
                       <span>Oracles</span>
                     </Link>{' '}
                     which face additional risks (described above).
                   </p>
-
                   <p>
-                    Also note, some Boosted pools, like those by Tetu and Idle may use strategies
-                    that utilize multiple yield protocols in order to maximize yield. Since these
-                    strategies may change exposure to the underlying yield protocols at any time,
-                    LPs must accept the risk that the protocol utilizing these strategies carefully
-                    vets all third party protocols to reduce composability risks.
+                    Also note, some boosted pools may use strategies that utilize multiple yield
+                    protocols in order to maximize yield. Since these strategies may change exposure
+                    to the underlying yield protocols at any time, LPs must accept the risk that the
+                    protocol utilizing these strategies carefully vets all third party protocols to
+                    reduce composability risks.
                   </p>
-
                   <p>
-                    If the underlying lending protocol were to get hacked, LPs in a boosted pool
-                    that deposits liquidity in that protocol could lose funds.
+                    If the underlying protocol were to get hacked, LPs in a boosted pool that
+                    deposits liquidity in that protocol could lose funds.
                   </p>
                   <h5>Depegging risk</h5>
                   <p>
@@ -1058,6 +1090,70 @@ export default function Privacy() {
                     </Link>
                     , as described above.
                   </p>
+                </div>
+              </FadeInOnView>
+
+              <FadeInOnView>
+                <div className="subsection">
+                  <h4 className="anchor" id="stablesurge-hook">
+                    StableSurge Hook
+                  </h4>
+                  <p>
+                    If a pool is pushed beyond its threshold balance, a surge is initiated,
+                    resulting in an increasing tax on sellers who negatively impact the peg of the
+                    asset by continuing to push the pool out of balance. On the other hand, the
+                    liquidity providers who maintain the risk of being in the pool, earn an
+                    increased fee, resulting in higher returns on their position during times of
+                    volatility.
+                  </p>
+                  <p>
+                    The directional fee nature of the StableSurge hooks only charges the increased
+                    fee on those sellers who are driving the peg further from equilibrium, while
+                    those who are buying the underperforming asset are only charged the base fee.
+                    This aligns the incentives of the liquidity providers and the project entity,
+                    which inherently wants its token to stay as close to the peg as possible.
+                  </p>
+                  <p>
+                    Stable Surge hooks introduces dynamic swap fees designed to protect peg, but may
+                    also impact the risk profile of a pool. Please also refer to{' '}
+                    <Link href="risks#hooks-risk">
+                      <span>Hooks</span>
+                    </Link>{' '}
+                    risk section and other{' '}
+                    <Link href="risks#general">
+                      <span>General</span>
+                    </Link>{' '}
+                    risks.
+                  </p>
+                  <ul>
+                    <li>
+                      Dynamic fee volatility: these fees are not fixed and can change significantly
+                      based on several factors, including but not limited to: pool imbalances,
+                      market volatility, and the specific configuration of the StableSurge
+                      parameters. You may encounter unexpectedly high fees, especially during
+                      periods of market stress or when the pool is significantly off-target. While
+                      the hook can lead to lower fees, there is no guarantee of consistency, and
+                      fees can rapidly increase.
+                    </li>
+                    <li>
+                      Parameter Sensitivity: The performance of the StableSurge hook is highly
+                      dependent on the correct configuration of its parameters. Incorrectly
+                      configured parameters could lead to unintended consequences, such as
+                      excessively high fees, ineffective rebalancing, or even instability in the
+                      pool. Changes to these parameters can also significantly alter the pool&apos;s
+                      behavior.
+                    </li>
+                    <li>
+                      Rate provider risk: inaccurate or manipulated oracle data could lead to
+                      unexpected fee adjustments and potential losses. Rate provider failures or
+                      manipulation are inherent risks in decentralized finance. Learn more about
+                      rate provider and oracle risks in the{' '}
+                      <Link href="risks#composable-pools">
+                        <span>Composable Stable Pools</span>
+                      </Link>{' '}
+                      risk section.
+                    </li>
+                  </ul>
                 </div>
               </FadeInOnView>
 
